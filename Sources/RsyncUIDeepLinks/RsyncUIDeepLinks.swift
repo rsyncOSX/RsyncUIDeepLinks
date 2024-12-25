@@ -20,9 +20,9 @@ public enum DeeplinknavigationError: LocalizedError {
         case .invalidurl:
             "Invalid URL"
         case .invalidscheme:
-            "Invalid URL scheme"
+            "Invalid URL scheme, scheme should be rsyncuiapp"
         case .noaction:
-            "No action URL scheme"
+            "No action defined for URL scheme"
         }
     }
 }
