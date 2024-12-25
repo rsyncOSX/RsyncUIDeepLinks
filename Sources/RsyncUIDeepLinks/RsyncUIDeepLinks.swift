@@ -27,13 +27,14 @@ public enum DeeplinknavigationError: LocalizedError {
     }
 }
 
-public enum Deeplinknavigation: String {
+public enum Deeplinknavigation: String, Sendable {
     case quicktask
     case loadprofile
     case loadandestimateprofile
 }
 
-public struct DeeplinkQueryItem: Hashable {
+
+public struct DeeplinkQueryItem: Hashable, Sendable {
     public let host: Deeplinknavigation
     public let queryItem: URLQueryItem?
 }
