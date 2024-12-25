@@ -53,53 +53,16 @@ public struct RsyncUIDeepLinks {
     public func thrownoaction() throws {
         throw DeeplinknavigationError.noaction
     }
-    
-    public func handlevalidURL(_ url: URL) -> DeeplinkQueryItem? {
-        if let components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
-            if let queryItems = components.queryItems, queryItems.count == 1 {
-                return withQueryItems(components)
-            } else {
-                return noQueryItems(components)
-            }
+
+    public func handlevalidURL(_ urlcomponents: URLComponents) -> DeeplinkQueryItem? {
+        if let queryItems = urlcomponents.queryItems, queryItems.count == 1 {
+            withQueryItems(urlcomponents)
         } else {
-            return nil
+            noQueryItems(urlcomponents)
         }
     }
-    
-/*
-    // URL has to be verified ahead of calling this function
-    public func handleURL (_ url: URL) -> DeeplinkQueryItem? {
 
-        var components: URLComponents?
-
-        do {
-            components = try validateScheme(url)
-        } catch let e {
-            let error = e
-            // propogateerror(error: error)
-            return nil
-        }
-
-        if let components {
-            if let queryItems = components.queryItems, queryItems.count == 1 {
-                return withQueryItems(components)
-            } else {
-                return noQueryItems(components)
-            }
-        }
-        
-        do {
-            try thrownoaction()
-        } catch let e {
-            // propogateerror(error: error)
-            return nil
-        }
-
-        return nil
-    }
-*/
     public func withQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
-        
         // First check if there are queryItems and only one queryItem
         // rsyncuiapp://loadandestimateprofile?profile=Pictures
         // rsyncuiapp://loadandestimateprofile?profile=default
@@ -145,6 +108,6 @@ public struct RsyncUIDeepLinks {
             return nil
         }
     }
-    
-    public init () {}
+
+    public init() {}
 }
