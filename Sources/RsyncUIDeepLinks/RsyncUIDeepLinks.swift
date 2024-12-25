@@ -83,7 +83,6 @@ public struct RsyncUIDeepLinks {
                     default:
                         return nil
                     }
-
                 } else {
                     return nil
                 }
