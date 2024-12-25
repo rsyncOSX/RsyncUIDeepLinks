@@ -27,6 +27,14 @@ public enum DeeplinknavigationError: LocalizedError {
     }
 }
 
+public enum NoValidProfileError: LocalizedError {
+    case noprofile
+    
+    public var errorDescription: String? {
+        "No valid profile found"
+    }
+}
+
 public enum Deeplinknavigation: String, Sendable {
     case quicktask
     case loadprofile
@@ -42,8 +50,9 @@ public struct DeeplinkQueryItem: Hashable, Sendable {
 @MainActor
 public struct RsyncUIDeepLinks {
     public func validateScheme(_ url: URL) throws -> URLComponents? {
-        guard url.scheme == "rsyncuiapp" else { throw DeeplinknavigationError.invalidscheme }
-
+        guard url.scheme == "rsyncuiapp" else {
+            throw DeeplinknavigationError.invalidscheme
+        }
         if let components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
             return components
         } else {
@@ -61,6 +70,17 @@ public struct RsyncUIDeepLinks {
         } else {
             noQueryItems(urlcomponents)
         }
+    }
+    
+    public func validateprofile(_ profile: String, _ existingProfiles: [String]) throws  {
+        guard existingProfiles.contains(profile) else {
+            throw NoValidProfileError.noprofile
+        }
+        
+    }
+    
+    public func noprofile() throws {
+        throw NoValidProfileError.noprofile
     }
 
     public func withQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
