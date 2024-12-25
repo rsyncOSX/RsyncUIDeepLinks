@@ -40,7 +40,7 @@ public struct DeeplinkQueryItem: Hashable {
 
 @MainActor
 public struct RsyncUIDeepLinks {
-    private func validateScheme(_ url: URL) throws -> URLComponents? {
+    public func validateScheme(_ url: URL) throws -> URLComponents? {
         guard url.scheme == "rsyncuiapp" else { throw DeeplinknavigationError.invalidscheme }
 
         if let components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
@@ -50,11 +50,25 @@ public struct RsyncUIDeepLinks {
         }
     }
 
-    private func thrownoaction() throws {
+    public func thrownoaction() throws {
         throw DeeplinknavigationError.noaction
     }
-
-    public func handleURL(_ url: URL) -> DeeplinkQueryItem? {
+    
+    public func handlevalidURL(_ url: URL) -> DeeplinkQueryItem? {
+        if let components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
+            if let queryItems = components.queryItems, queryItems.count == 1 {
+                return withQueryItems(components)
+            } else {
+                return noQueryItems(components)
+            }
+        } else {
+            return nil
+        }
+    }
+    
+/*
+    // URL has to be verified ahead of calling this function
+    public func handleURL (_ url: URL) -> DeeplinkQueryItem? {
 
         var components: URLComponents?
 
@@ -73,6 +87,7 @@ public struct RsyncUIDeepLinks {
                 return noQueryItems(components)
             }
         }
+        
         do {
             try thrownoaction()
         } catch let e {
@@ -82,8 +97,8 @@ public struct RsyncUIDeepLinks {
 
         return nil
     }
-
-    private func withQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
+*/
+    public func withQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
         
         // First check if there are queryItems and only one queryItem
         // rsyncuiapp://loadandestimateprofile?profile=Pictures
@@ -113,7 +128,7 @@ public struct RsyncUIDeepLinks {
         return nil
     }
 
-    private func noQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
+    public func noQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
         guard components.queryItems == nil else { return nil }
         // No queryItems found
         // rsyncuiapp://quicktask
