@@ -34,8 +34,8 @@ public enum Deeplinknavigation: String {
 }
 
 public struct DeeplinkQueryItem: Hashable {
-    let host: Deeplinknavigation
-    let queryItem: URLQueryItem?
+    public let host: Deeplinknavigation
+    public let queryItem: URLQueryItem?
 }
 
 @MainActor
