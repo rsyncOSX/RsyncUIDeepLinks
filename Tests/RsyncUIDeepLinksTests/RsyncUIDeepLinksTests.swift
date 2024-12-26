@@ -8,19 +8,21 @@ import Foundation
     // rsyncuiapp://loadandestimateprofile?profile=Pictures
     // rsyncuiapp://loadandestimateprofile?profile=default
     // rsyncuiapp://loadprofile?profile=Samsung
-    // rsyncuiapp://quicktask
+    // rsyncuiapp://quicktask¨
+    // rsyncuiapp://loadprofileandverify?profile=Pictures&task=first - multiple queryItems, separated by &
     
     var url1: URL? { URL(string: "rsyncuiapp://loadprofileandestimate?profile=Pictures") }
     var url2: URL? { URL(string: "rsyncuiapp://loadprofileandestimate?profile=default") }
     var url3: URL? { URL(string: "rsyncuiapp://loadprofile?profile=Samsung") }
     var url4: URL? { URL(string: "rsyncuiapp://quicktask") }
+    var url5: URL? { URL(string: "rsyncuiapp://loadprofileandverify?profile=Pictures&task=first") }
 
     
     @Test func URLstring1() async {
         
         let rsyncUIDeepLinks =  await RsyncUIDeepLinks()
         let truth = DeeplinkQueryItem(host: .loadprofileandestimate,
-                                     queryItem: URLQueryItem (name: "profile", value: "Pictures"))
+                                     queryItems: [URLQueryItem (name: "profile", value: "Pictures")])
         
         if let url1  {
             do {
@@ -41,7 +43,7 @@ import Foundation
         
         let rsyncUIDeepLinks =  await RsyncUIDeepLinks()
         let truth = DeeplinkQueryItem(host: .loadprofileandestimate,
-                                     queryItem: URLQueryItem (name: "profile", value: "default"))
+                                     queryItems: [URLQueryItem (name: "profile", value: "default")])
         
         if let url2  {
             do {
@@ -62,7 +64,7 @@ import Foundation
         
         let rsyncUIDeepLinks =  await RsyncUIDeepLinks()
         let truth = DeeplinkQueryItem(host: .loadprofile,
-                                     queryItem: URLQueryItem (name: "profile", value: "Samsung"))
+                                     queryItems: [URLQueryItem (name: "profile", value: "Samsung")])
         
         if let url3  {
             do {
@@ -83,11 +85,32 @@ import Foundation
         
         let rsyncUIDeepLinks =  await RsyncUIDeepLinks()
         let truth = DeeplinkQueryItem(host: .quicktask,
-                                     queryItem: nil)
+                                     queryItems: nil)
         
         if let url4  {
             do {
                 if let components = try await rsyncUIDeepLinks.validateScheme(url4) {
+                    if let test =  await rsyncUIDeepLinks.handlevalidURL(components) {
+                        #expect(test == truth)
+                    } else {
+                        print("No action")
+                    }
+                }
+            } catch  {
+                print("Error: \(error)")
+            }
+        }
+    }
+    
+    @Test func URLstring5() async {
+        
+        let rsyncUIDeepLinks =  await RsyncUIDeepLinks()
+        let truth = DeeplinkQueryItem(host: .loadprofileandverify,
+                                      queryItems: [URLQueryItem (name: "profile", value: "Pirctures"),
+                                                   URLQueryItem (name: "task", value: "first")])
+        if let url5  {
+            do {
+                if let components = try await rsyncUIDeepLinks.validateScheme(url5) {
                     if let test =  await rsyncUIDeepLinks.handlevalidURL(components) {
                         #expect(test == truth)
                     } else {

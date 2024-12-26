@@ -39,12 +39,13 @@ public enum Deeplinknavigation: String, Sendable {
     case quicktask
     case loadprofile
     case loadprofileandestimate
+    case loadprofileandverify
 }
 
 
 public struct DeeplinkQueryItem: Hashable, Sendable {
     public let host: Deeplinknavigation
-    public let queryItem: URLQueryItem?
+    public let queryItems: [URLQueryItem]?
 }
 
 @MainActor
@@ -65,7 +66,7 @@ public struct RsyncUIDeepLinks {
     }
 
     public func handlevalidURL(_ urlcomponents: URLComponents) -> DeeplinkQueryItem? {
-        if let queryItems = urlcomponents.queryItems, queryItems.count == 1 {
+        if let queryItems = urlcomponents.queryItems, queryItems.count > 0 {
             withQueryItems(urlcomponents)
         } else {
             noQueryItems(urlcomponents)
@@ -81,9 +82,10 @@ public struct RsyncUIDeepLinks {
     
     public func withQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
         // First check if there are queryItems and only one queryItem
-        // rsyncuiapp://loadandestimateprofile?profile=Pictures
-        // rsyncuiapp://loadandestimateprofile?profile=default
+        // rsyncuiapp://loadprofileandestimate?profile=Pictures
+        // rsyncuiapp://loadprofileandestimate?profile=default
         // rsyncuiapp://loadprofile?profile=Samsung
+        // rsyncuiapp://loadprofileandverify?profile=Pictures
 
         if let queryItems = components.queryItems, queryItems.count == 1 {
             // Iterate through the query items and store them in the dictionary
@@ -91,10 +93,13 @@ public struct RsyncUIDeepLinks {
                 if let host = components.host {
                     switch host {
                     case Deeplinknavigation.loadprofile.rawValue:
-                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofile, queryItem: queryItem)
+                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofile, queryItems: [queryItem])
                         return deepLinkQueryItem
                     case Deeplinknavigation.loadprofileandestimate.rawValue:
-                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandestimate, queryItem: queryItem)
+                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandestimate, queryItems: [queryItem])
+                        return deepLinkQueryItem
+                    case Deeplinknavigation.loadprofileandverify.rawValue:
+                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandverify, queryItems: [queryItem])
                         return deepLinkQueryItem
                     default:
                         return nil
@@ -114,7 +119,7 @@ public struct RsyncUIDeepLinks {
         if let host = components.host {
             switch host {
             case Deeplinknavigation.quicktask.rawValue:
-                let deepLinkQueryItem = DeeplinkQueryItem(host: .quicktask, queryItem: nil)
+                let deepLinkQueryItem = DeeplinkQueryItem(host: .quicktask, queryItems: nil)
                 return deepLinkQueryItem
             default:
                 return nil
