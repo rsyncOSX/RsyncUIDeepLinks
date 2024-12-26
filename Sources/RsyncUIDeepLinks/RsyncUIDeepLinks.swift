@@ -38,7 +38,7 @@ public enum NoValidProfileError: LocalizedError {
 public enum Deeplinknavigation: String, Sendable {
     case quicktask
     case loadprofile
-    case loadandestimateprofile
+    case loadprofileandestimate
 }
 
 
@@ -93,8 +93,8 @@ public struct RsyncUIDeepLinks {
                     case Deeplinknavigation.loadprofile.rawValue:
                         let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofile, queryItem: queryItem)
                         return deepLinkQueryItem
-                    case Deeplinknavigation.loadandestimateprofile.rawValue:
-                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadandestimateprofile, queryItem: queryItem)
+                    case Deeplinknavigation.loadprofileandestimate.rawValue:
+                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandestimate, queryItem: queryItem)
                         return deepLinkQueryItem
                     default:
                         return nil

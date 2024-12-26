@@ -10,8 +10,8 @@ import Foundation
     // rsyncuiapp://loadprofile?profile=Samsung
     // rsyncuiapp://quicktask
     
-    var url1: URL? { URL(string: "rsyncuiapp://loadandestimateprofile?profile=Pictures") }
-    var url2: URL? { URL(string: "rsyncuiapp://loadandestimateprofile?profile=default") }
+    var url1: URL? { URL(string: "rsyncuiapp://loadprofileandestimate?profile=Pictures") }
+    var url2: URL? { URL(string: "rsyncuiapp://loadprofileandestimate?profile=default") }
     var url3: URL? { URL(string: "rsyncuiapp://loadprofile?profile=Samsung") }
     var url4: URL? { URL(string: "rsyncuiapp://quicktask") }
 
@@ -19,7 +19,7 @@ import Foundation
     @Test func URLstring1() async {
         
         let rsyncUIDeepLinks =  await RsyncUIDeepLinks()
-        let truth = DeeplinkQueryItem(host: .loadandestimateprofile,
+        let truth = DeeplinkQueryItem(host: .loadprofileandestimate,
                                      queryItem: URLQueryItem (name: "profile", value: "Pictures"))
         
         if let url1  {
@@ -40,7 +40,7 @@ import Foundation
     @Test func URLstring2() async {
         
         let rsyncUIDeepLinks =  await RsyncUIDeepLinks()
-        let truth = DeeplinkQueryItem(host: .loadandestimateprofile,
+        let truth = DeeplinkQueryItem(host: .loadprofileandestimate,
                                      queryItem: URLQueryItem (name: "profile", value: "default"))
         
         if let url2  {
