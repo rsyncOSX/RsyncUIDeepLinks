@@ -29,7 +29,7 @@ public enum DeeplinknavigationError: LocalizedError {
 
 public enum NoValidProfileError: LocalizedError {
     case noprofile
-    
+
     public var errorDescription: String? {
         "No valid profile found"
     }
@@ -42,6 +42,9 @@ public enum Deeplinknavigation: String, Sendable {
     case loadprofileandverify
 }
 
+public enum QueryItemNames: String, Sendable {
+    case profile
+}
 
 public struct DeeplinkQueryItem: Hashable, Sendable {
     public let host: Deeplinknavigation
@@ -72,41 +75,41 @@ public struct RsyncUIDeepLinks {
             noQueryItems(urlcomponents)
         }
     }
-    
-    public func validateprofile(_ profile: String, _ existingProfiles: [String]) throws  {
+
+    public func validateprofile(_ profile: String, _ existingProfiles: [String]) throws {
         guard existingProfiles.contains(profile) else {
             throw NoValidProfileError.noprofile
         }
-        
     }
-    
+
     public func withQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
-        
         // First check if there are queryItems and only one queryItem
         // rsyncuiapp://loadprofileandestimate?profile=Pictures
         // rsyncuiapp://loadprofileandestimate?profile=default
         // rsyncuiapp://loadprofile?profile=Samsung
         // rsyncuiapp://loadprofileandverify?profile=Pictures
-        // rsyncuiapp://loadprofileandverify?profile=Pictures&task=first
+        // rsyncuiapp://loadprofileandverify?profile=Pictures&id=Pictures_backup
 
         if let queryItems = components.queryItems {
-                if let host = components.host {
-                    switch host {
-                    case Deeplinknavigation.loadprofile.rawValue:
-                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofile, queryItems: queryItems)
-                        return deepLinkQueryItem
-                    case Deeplinknavigation.loadprofileandestimate.rawValue:
-                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandestimate, queryItems: queryItems)
-                        return deepLinkQueryItem
-                    case Deeplinknavigation.loadprofileandverify.rawValue:
-                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandverify, queryItems: queryItems)
-                        return deepLinkQueryItem
-                    default:
-                        return nil
-                    }
-                } else {
+            if let host = components.host,
+               let queryitemname = queryItems.first?.name,
+               queryitemname == QueryItemNames.profile.rawValue {
+                switch host {
+                case Deeplinknavigation.loadprofile.rawValue:
+                    let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofile, queryItems: queryItems)
+                    return deepLinkQueryItem
+                case Deeplinknavigation.loadprofileandestimate.rawValue:
+                    let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandestimate, queryItems: queryItems)
+                    return deepLinkQueryItem
+                case Deeplinknavigation.loadprofileandverify.rawValue:
+                    let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandverify, queryItems: queryItems)
+                    return deepLinkQueryItem
+                default:
                     return nil
                 }
+            } else {
+                return nil
+            }
         }
         return nil
     }
