@@ -81,6 +81,7 @@ public struct RsyncUIDeepLinks {
     }
     
     public func withQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
+        
         // First check if there are queryItems and only one queryItem
         // rsyncuiapp://loadprofileandestimate?profile=Pictures
         // rsyncuiapp://loadprofileandestimate?profile=default
@@ -88,19 +89,17 @@ public struct RsyncUIDeepLinks {
         // rsyncuiapp://loadprofileandverify?profile=Pictures
         // rsyncuiapp://loadprofileandverify?profile=Pictures&task=first
 
-        if let queryItems = components.queryItems, queryItems.count == 1 {
-            // Iterate through the query items and store them in the dictionary
-            for queryItem in queryItems {
+        if let queryItems = components.queryItems {
                 if let host = components.host {
                     switch host {
                     case Deeplinknavigation.loadprofile.rawValue:
-                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofile, queryItems: [queryItem])
+                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofile, queryItems: queryItems)
                         return deepLinkQueryItem
                     case Deeplinknavigation.loadprofileandestimate.rawValue:
-                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandestimate, queryItems: [queryItem])
+                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandestimate, queryItems: queryItems)
                         return deepLinkQueryItem
                     case Deeplinknavigation.loadprofileandverify.rawValue:
-                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandverify, queryItems: [queryItem])
+                        let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandverify, queryItems: queryItems)
                         return deepLinkQueryItem
                     default:
                         return nil
@@ -108,7 +107,6 @@ public struct RsyncUIDeepLinks {
                 } else {
                     return nil
                 }
-            }
         }
         return nil
     }
