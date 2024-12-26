@@ -86,6 +86,7 @@ public struct RsyncUIDeepLinks {
         // rsyncuiapp://loadprofileandestimate?profile=default
         // rsyncuiapp://loadprofile?profile=Samsung
         // rsyncuiapp://loadprofileandverify?profile=Pictures
+        // rsyncuiapp://loadprofileandverify?profile=Pictures&task=first
 
         if let queryItems = components.queryItems, queryItems.count == 1 {
             // Iterate through the query items and store them in the dictionary
