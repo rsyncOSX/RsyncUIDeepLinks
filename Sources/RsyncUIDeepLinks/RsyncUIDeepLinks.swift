@@ -79,10 +79,6 @@ public struct RsyncUIDeepLinks {
         
     }
     
-    public func noprofile() throws {
-        throw NoValidProfileError.noprofile
-    }
-
     public func withQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
         // First check if there are queryItems and only one queryItem
         // rsyncuiapp://loadandestimateprofile?profile=Pictures
