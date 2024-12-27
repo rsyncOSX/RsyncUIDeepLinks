@@ -9,7 +9,7 @@ import Testing
     // rsyncuiapp://loadandestimateprofile?profile=default
     // rsyncuiapp://loadprofile?profile=Samsung
     // rsyncuiapp://quicktask¨
-    // rsyncuiapp://loadprofileandverify?profile=Pictures&task=first - multiple queryItems, separated by &
+    // rsyncuiapp://loadprofileandverify?profile=Pictures&id=Pictures_backup - multiple queryItems, separated by &
 
     var url1: URL? { URL(string: "rsyncuiapp://loadprofileandestimate?profile=Pictures") }
     var url2: URL? { URL(string: "rsyncuiapp://loadprofileandestimate?profile=default") }
