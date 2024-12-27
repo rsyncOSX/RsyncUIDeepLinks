@@ -1,6 +1,7 @@
 @testable import RsyncUIDeepLinks
 
 import Foundation
+import OSLog
 import Testing
 
 @Suite final class TestRsyncUIDeepLinks {
@@ -26,12 +27,13 @@ import Testing
                 if let components = try await rsyncUIDeepLinks.validateScheme(url1) {
                     if let test = await rsyncUIDeepLinks.handlevalidURL(components) {
                         #expect(test == truth)
+                        await handleURLsidebarmainView(url1)
                     } else {
-                        print("No action")
+                        Logger.process.warning("No action")
                     }
                 }
             } catch {
-                print("Error: \(error)")
+                Logger.process.warning("Error: \(error)")
             }
         }
     }
@@ -46,12 +48,13 @@ import Testing
                 if let components = try await rsyncUIDeepLinks.validateScheme(url2) {
                     if let test = await rsyncUIDeepLinks.handlevalidURL(components) {
                         #expect(test == truth)
+                        await handleURLsidebarmainView(url2)
                     } else {
-                        print("No action")
+                        Logger.process.warning("No action")
                     }
                 }
             } catch {
-                print("Error: \(error)")
+                Logger.process.warning("Error: \(error)")
             }
         }
     }
@@ -66,12 +69,13 @@ import Testing
                 if let components = try await rsyncUIDeepLinks.validateScheme(url3) {
                     if let test = await rsyncUIDeepLinks.handlevalidURL(components) {
                         #expect(test == truth)
+                        await handleURLsidebarmainView(url3)
                     } else {
-                        print("No action")
+                        Logger.process.warning("No action")
                     }
                 }
             } catch {
-                print("Error: \(error)")
+                Logger.process.warning("Error: \(error)")
             }
         }
     }
@@ -86,12 +90,13 @@ import Testing
                 if let components = try await rsyncUIDeepLinks.validateScheme(url4) {
                     if let test = await rsyncUIDeepLinks.handlevalidURL(components) {
                         #expect(test == truth)
+                        await handleURLsidebarmainView(url4)
                     } else {
-                        print("No action")
+                        Logger.process.warning("No action")
                     }
                 }
             } catch {
-                print("Error: \(error)")
+                Logger.process.warning("Error: \(error)")
             }
         }
     }
@@ -108,80 +113,67 @@ import Testing
                         #expect(test == truth)
                         await handleURLsidebarmainView(url5)
                     } else {
-                        print("No action")
+                        Logger.process.warning("No action")
                     }
                 }
             } catch {
-                print("Error: \(error)")
+                Logger.process.warning("Error: \(error)")
             }
         }
     }
-    
-    private func handleURLsidebarmainView(_ url: URL) async {
 
+    private func handleURLsidebarmainView(_ url: URL) async {
         switch await handleURL(url)?.host {
         case .quicktask:
-            print("selectedview = .synchronize")
-            print("executetasknavigation.append(Tasks(task: .quick_synchronize")
+            Logger.process.info("handleURLsidebarmainView: URL Quicktask - \(url)")
+            Logger.process.info("selectedview = .synchronize")
+            Logger.process.info("executetasknavigation.append(Tasks(task: .quick_synchronize")
         case .loadprofile:
             if let queryitem = await handleURL(url)?.queryItems, queryitem.count == 1 {
                 let profile = queryitem[0].value ?? ""
                 if validateprofile(profile) {
-                    print("selectedprofile = profile")
+                    Logger.process.info("selectedprofile \(profile)")
                 }
             } else {
                 return
             }
         case .loadprofileandestimate:
+            Logger.process.info("handleURLsidebarmainView: URL Loadprofile and Estimate - \(url)")
             if let queryitem = await handleURL(url)?.queryItems, queryitem.count == 1 {
                 let profile = queryitem[0].value ?? ""
-                
+
                 if profile == "default" {
-                    print("selectedview = .synchronize")
-                    Task {
-                        try await Task.sleep(seconds: 1)
-                        print("executetasknavigation.append(Tasks(task: .summarizeddetailsview)")
-                    }
+                    Logger.process.info("selectedview = .synchronize")
+                    Logger.process.info("executetasknavigation.append(Tasks(task: .summarizeddetailsview)")
                 } else {
                     if validateprofile(profile) {
-                        print("selectedprofile = profile")
-                              print("selectedview = .synchronize")
-                        Task {
-                            try await Task.sleep(seconds: 1)
-                            print("executetasknavigation.append(Tasks(task: .summarizeddetailsview)")
-                        }
+                        Logger.process.info("selectedprofile \(profile)")
+                        Logger.process.info("selectedview = .synchronize")
+                        Logger.process.info("executetasknavigation.append(Tasks(task: .summarizeddetailsview)")
                     }
                 }
-                
+
             } else {
                 return
             }
         case .loadprofileandverify:
+            Logger.process.info("handleURLsidebarmainView: URL Loadprofile and Verify - \(url)")
             if let queryitems = await handleURL(url)?.queryItems, queryitems.count == 2 {
                 let profile = queryitems[0].value ?? ""
-                
+
                 if profile == "default" {
-                    print("selectedview = .verify_remote")
-                    print("queryitem = queryitems[1]")
-                    Task {
-                        try await Task.sleep(seconds: 1)
-                        
-                        // Observe queryitem
-                        print("queryitem = queryitems[1]")
-                    }
+                    Logger.process.info("selectedview = .verify_remote")
+                    Logger.process.info("Observe queryitem")
+                    Logger.process.info("queryitem = queryitems[1]")
                 } else {
                     if validateprofile(profile) {
-                        print("selectedprofile = profile")
-                        print("selectedview = .verify_remote")
-                        print("queryitem = queryitems[1]")
-                        Task {
-                            try await Task.sleep(seconds: 1)
-                            // Observe queryitem
-                            print("queryitem = queryitems[1]")
-                        }
+                        Logger.process.info("selectedprofile \(profile)")
+                        Logger.process.info("selectedview = .verify_remote")
+                        Logger.process.info("Observe queryitem")
+                        Logger.process.info("queryitem = queryitems[1]")
                     }
                 }
-                
+
             } else {
                 return
             }
@@ -189,9 +181,9 @@ import Testing
             return
         }
     }
-    
+
     func handleURL(_ url: URL) async -> DeeplinkQueryItem? {
-        let rsyncUIDeepLinks =  await RsyncUIDeepLinks()
+        let rsyncUIDeepLinks = await RsyncUIDeepLinks()
         do {
             if let components = try await rsyncUIDeepLinks.validateScheme(url) {
                 if let deepLinkQueryItem = await rsyncUIDeepLinks.handlevalidURL(components) {
@@ -201,26 +193,24 @@ import Testing
                         try await rsyncUIDeepLinks.thrownoaction()
                     } catch let e {
                         let error = e
-                        // propogateerror(error: error)
+                        Logger.process.warning("handleURL: Error - \(error)")
                     }
                 }
             }
 
         } catch let e {
             let error = e
-            // propogateerror(error: error)
+            Logger.process.warning("handleURL: Error - \(error)")
         }
         return nil
     }
 
-    func validateprofile(_ profile: String) -> Bool {
-        return true
+    func validateprofile(_: String) -> Bool {
+        true
     }
 }
 
-extension Task where Success == Never, Failure == Never {
-    static func sleep(seconds: Double) async throws {
-        let duration = UInt64(seconds * 1_000_000_000)
-        try await Task.sleep(nanoseconds: duration)
-    }
+extension Logger {
+    private static let subsystem = Bundle.main.bundleIdentifier!
+    static let process = Logger(subsystem: subsystem, category: "process")
 }
