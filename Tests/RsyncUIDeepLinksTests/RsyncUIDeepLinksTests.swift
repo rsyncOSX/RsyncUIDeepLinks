@@ -106,6 +106,7 @@ import Testing
                 if let components = try await rsyncUIDeepLinks.validateScheme(url5) {
                     if let test = await rsyncUIDeepLinks.handlevalidURL(components) {
                         #expect(test == truth)
+                        await handleURLsidebarmainView(url5)
                     } else {
                         print("No action")
                     }
@@ -114,5 +115,109 @@ import Testing
                 print("Error: \(error)")
             }
         }
+    }
+    
+    private func handleURLsidebarmainView(_ url: URL) async {
+
+        switch handleURL(url)?.host {
+        case .quicktask:
+            print("selectedview = .synchronize")
+            print("executetasknavigation.append(Tasks(task: .quick_synchronize")
+        case .loadprofile:
+            if let queryitem = handleURL(url)?.queryItems, queryitem.count == 1 {
+                let profile = queryitem[0].value ?? ""
+                if validateprofile(profile) {
+                    print("selectedprofile = profile")
+                }
+            } else {
+                return
+            }
+        case .loadprofileandestimate:
+            if let queryitem = handleURL(url)?.queryItems, queryitem.count == 1 {
+                let profile = queryitem[0].value ?? ""
+                
+                if profile == "default" {
+                    print("selectedview = .synchronize")
+                    Task {
+                        try await Task.sleep(seconds: 1)
+                        print("executetasknavigation.append(Tasks(task: .summarizeddetailsview)")
+                    }
+                } else {
+                    if validateprofile(profile) {
+                        print("selectedprofile = profile")
+                              print("selectedview = .synchronize")
+                        Task {
+                            try await Task.sleep(seconds: 1)
+                            print("executetasknavigation.append(Tasks(task: .summarizeddetailsview)")
+                        }
+                    }
+                }
+                
+            } else {
+                return
+            }
+        case .loadprofileandverify:
+            if let queryitems = handleURL(url)?.queryItems, queryitems.count == 2 {
+                let profile = queryitems[0].value ?? ""
+                
+                if profile == "default" {
+                    print("selectedview = .verify_remote")
+                    Task {
+                        try await Task.sleep(seconds: 1)
+                        // Observe queryitem
+                        print("queryitem = queryitems[1]")
+                    }
+                } else {
+                    if validateprofile(profile) {
+                        print("selectedprofile = profile")
+                              print("selectedview = .verify_remote")
+                        Task {
+                            try await Task.sleep(seconds: 1)
+                            // Observe queryitem
+                            print("queryitem = queryitems[1]")
+                        }
+                    }
+                }
+                
+            } else {
+                return
+            }
+        default:
+            return
+        }
+    }
+    
+    func handleURL(_ url: URL) -> DeeplinkQueryItem? {
+        let rsyncUIDeepLinks =  RsyncUIDeepLinks()
+        do {
+            if let components = try rsyncUIDeepLinks.validateScheme(url) {
+                if let deepLinkQueryItem = rsyncUIDeepLinks.handlevalidURL(components) {
+                    return deepLinkQueryItem
+                } else {
+                    do {
+                        try rsyncUIDeepLinks.thrownoaction()
+                    } catch let e {
+                        let error = e
+                        // propogateerror(error: error)
+                    }
+                }
+            }
+
+        } catch let e {
+            let error = e
+            // propogateerror(error: error)
+        }
+        return nil
+    }
+
+    func validateprofile(_ profile: String) -> Bool {
+        return true
+    }
+}
+
+extension Task where Success == Never, Failure == Never {
+    static func sleep(seconds: Double) async throws {
+        let duration = UInt64(seconds * 1_000_000_000)
+        try await Task.sleep(nanoseconds: duration)
     }
 }
