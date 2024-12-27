@@ -139,18 +139,18 @@ import Testing
             }
         case .loadprofileandestimate:
             Logger.process.info("handleURLsidebarmainView: URL Loadprofile and Estimate - \(url)")
-            if let queryitem = await handleURL(url)?.queryItems, queryitem.count == 1 {
-                let profile = queryitem[0].value ?? ""
+            if let queryitems = await handleURL(url)?.queryItems, queryitems.count == 1 {
+                let profile = queryitems[0].value ?? ""
 
                 if profile == "default" {
                     Logger.process.info("selectedprofile \(profile)")
                     Logger.process.info("selectedview = .synchronize")
-                    Logger.process.info("executetasknavigation.append(Tasks(task: .summarizeddetailsview)")
+                    Logger.process.info("queryitem \(queryitems[0])")
                 } else {
                     if validateprofile(profile) {
                         Logger.process.info("selectedprofile \(profile)")
                         Logger.process.info("selectedview = .synchronize")
-                        Logger.process.info("executetasknavigation.append(Tasks(task: .summarizeddetailsview)")
+                        Logger.process.info("queryitem \(queryitems[0])")
                     }
                 }
             } else {
