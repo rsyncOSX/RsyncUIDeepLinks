@@ -143,6 +143,7 @@ import Testing
                 let profile = queryitem[0].value ?? ""
 
                 if profile == "default" {
+                    Logger.process.info("selectedprofile \(profile)")
                     Logger.process.info("selectedview = .synchronize")
                     Logger.process.info("executetasknavigation.append(Tasks(task: .summarizeddetailsview)")
                 } else {
@@ -152,7 +153,6 @@ import Testing
                         Logger.process.info("executetasknavigation.append(Tasks(task: .summarizeddetailsview)")
                     }
                 }
-
             } else {
                 return
             }
@@ -164,13 +164,13 @@ import Testing
                 if profile == "default" {
                     Logger.process.info("selectedview = .verify_remote")
                     Logger.process.info("Observe queryitem")
-                    Logger.process.info("queryitem = queryitems[1]")
+                    Logger.process.info("queryitem \(queryitems[1])")
                 } else {
                     if validateprofile(profile) {
                         Logger.process.info("selectedprofile \(profile)")
                         Logger.process.info("selectedview = .verify_remote")
                         Logger.process.info("Observe queryitem")
-                        Logger.process.info("queryitem = queryitems[1]")
+                        Logger.process.info("queryitem \(queryitems[1])")
                     }
                 }
 
