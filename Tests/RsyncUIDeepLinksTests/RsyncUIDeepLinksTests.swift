@@ -119,12 +119,12 @@ import Testing
     
     private func handleURLsidebarmainView(_ url: URL) async {
 
-        switch handleURL(url)?.host {
+        switch await handleURL(url)?.host {
         case .quicktask:
             print("selectedview = .synchronize")
             print("executetasknavigation.append(Tasks(task: .quick_synchronize")
         case .loadprofile:
-            if let queryitem = handleURL(url)?.queryItems, queryitem.count == 1 {
+            if let queryitem = await handleURL(url)?.queryItems, queryitem.count == 1 {
                 let profile = queryitem[0].value ?? ""
                 if validateprofile(profile) {
                     print("selectedprofile = profile")
@@ -133,7 +133,7 @@ import Testing
                 return
             }
         case .loadprofileandestimate:
-            if let queryitem = handleURL(url)?.queryItems, queryitem.count == 1 {
+            if let queryitem = await handleURL(url)?.queryItems, queryitem.count == 1 {
                 let profile = queryitem[0].value ?? ""
                 
                 if profile == "default" {
@@ -157,20 +157,23 @@ import Testing
                 return
             }
         case .loadprofileandverify:
-            if let queryitems = handleURL(url)?.queryItems, queryitems.count == 2 {
+            if let queryitems = await handleURL(url)?.queryItems, queryitems.count == 2 {
                 let profile = queryitems[0].value ?? ""
                 
                 if profile == "default" {
                     print("selectedview = .verify_remote")
+                    print("queryitem = queryitems[1]")
                     Task {
                         try await Task.sleep(seconds: 1)
+                        
                         // Observe queryitem
                         print("queryitem = queryitems[1]")
                     }
                 } else {
                     if validateprofile(profile) {
                         print("selectedprofile = profile")
-                              print("selectedview = .verify_remote")
+                        print("selectedview = .verify_remote")
+                        print("queryitem = queryitems[1]")
                         Task {
                             try await Task.sleep(seconds: 1)
                             // Observe queryitem
@@ -187,15 +190,15 @@ import Testing
         }
     }
     
-    func handleURL(_ url: URL) -> DeeplinkQueryItem? {
-        let rsyncUIDeepLinks =  RsyncUIDeepLinks()
+    func handleURL(_ url: URL) async -> DeeplinkQueryItem? {
+        let rsyncUIDeepLinks =  await RsyncUIDeepLinks()
         do {
-            if let components = try rsyncUIDeepLinks.validateScheme(url) {
-                if let deepLinkQueryItem = rsyncUIDeepLinks.handlevalidURL(components) {
+            if let components = try await rsyncUIDeepLinks.validateScheme(url) {
+                if let deepLinkQueryItem = await rsyncUIDeepLinks.handlevalidURL(components) {
                     return deepLinkQueryItem
                 } else {
                     do {
-                        try rsyncUIDeepLinks.thrownoaction()
+                        try await rsyncUIDeepLinks.thrownoaction()
                     } catch let e {
                         let error = e
                         // propogateerror(error: error)
