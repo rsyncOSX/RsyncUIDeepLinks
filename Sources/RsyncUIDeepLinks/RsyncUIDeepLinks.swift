@@ -35,6 +35,14 @@ public enum NoValidProfileError: LocalizedError {
     }
 }
 
+public enum OnlyoneURLactionError: LocalizedError {
+    case onlyoneaction
+
+    public var errorDescription: String? {
+        "Only one URL action at a time is allowed"
+    }
+}
+
 public enum Deeplinknavigation: String, Sendable {
     case quicktask
     case loadprofile
@@ -79,6 +87,14 @@ public struct RsyncUIDeepLinks {
     public func validateprofile(_ profile: String, _ existingProfiles: [String]) throws {
         guard existingProfiles.contains(profile) else {
             throw NoValidProfileError.noprofile
+        }
+    }
+    
+    public func validatenoongoingURLaction(_ quyerItems: URLQueryItem?) throws -> Bool {
+        if quyerItems == nil {
+            return true
+        } else {
+            throw OnlyoneURLactionError.onlyoneaction
         }
     }
 
