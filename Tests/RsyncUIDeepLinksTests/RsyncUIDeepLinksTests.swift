@@ -141,15 +141,15 @@ import Testing
             Logger.process.info("handleURLsidebarmainView: URL Loadprofile and Estimate - \(url)")
             if let queryitems = await handleURL(url)?.queryItems, queryitems.count == 1 {
                 let profile = queryitems[0].value ?? ""
+                Logger.process.info("selectedprofile \(profile)")
+                Logger.process.info("selectedview = .synchronize")
 
                 if profile == "default" {
-                    Logger.process.info("selectedprofile \(profile)")
-                    Logger.process.info("selectedview = .synchronize")
+                    Logger.process.info("Observe queryitem")
                     Logger.process.info("queryitem \(queryitems[0])")
                 } else {
                     if validateprofile(profile) {
-                        Logger.process.info("selectedprofile \(profile)")
-                        Logger.process.info("selectedview = .synchronize")
+                        Logger.process.info("Observe queryitem")
                         Logger.process.info("queryitem \(queryitems[0])")
                     }
                 }
@@ -160,15 +160,14 @@ import Testing
             Logger.process.info("handleURLsidebarmainView: URL Loadprofile and Verify - \(url)")
             if let queryitems = await handleURL(url)?.queryItems, queryitems.count == 2 {
                 let profile = queryitems[0].value ?? ""
-
+                Logger.process.info("selectedprofile \(profile)")
+                Logger.process.info("selectedview = .verify_remote")
+                
                 if profile == "default" {
-                    Logger.process.info("selectedview = .verify_remote")
                     Logger.process.info("Observe queryitem")
                     Logger.process.info("queryitem \(queryitems[1])")
                 } else {
                     if validateprofile(profile) {
-                        Logger.process.info("selectedprofile \(profile)")
-                        Logger.process.info("selectedview = .verify_remote")
                         Logger.process.info("Observe queryitem")
                         Logger.process.info("queryitem \(queryitems[1])")
                     }
