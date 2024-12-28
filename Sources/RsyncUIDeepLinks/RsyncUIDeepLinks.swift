@@ -90,10 +90,8 @@ public struct RsyncUIDeepLinks {
         }
     }
     
-    public func validatenoongoingURLaction(_ quyerItems: URLQueryItem?) throws -> Bool {
-        if quyerItems == nil {
-            return true
-        } else {
+    public func validatenoongoingURLaction(_ quyerItems: URLQueryItem?) throws  {
+        guard quyerItems == nil else {
             throw OnlyoneURLactionError.onlyoneaction
         }
     }
