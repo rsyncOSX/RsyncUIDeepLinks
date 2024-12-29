@@ -96,12 +96,6 @@ public struct RsyncUIDeepLinks {
         }
     }
     
-    public func validatenoongoingURLaction(_ inaction: Bool) throws  {
-        guard inaction == false else {
-            throw OnlyoneURLactionError.onlyoneaction
-        }
-    }
-
     public func withQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
         // First check if there are queryItems and only one queryItem
         // rsyncuiapp://loadprofileandestimate?profile=Pictures
