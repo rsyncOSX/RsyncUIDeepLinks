@@ -121,7 +121,26 @@ import Testing
             }
         }
     }
+    
+    @Test func createURLloadandverify() async {
+        let rsyncUIDeepLinks = await RsyncUIDeepLinks()
+        let host = Deeplinknavigation.loadprofileandverify.rawValue
+        let queryitems: [URLQueryItem] = [URLQueryItem(name: "profile", value: "Pictures"),
+                                          URLQueryItem(name: "id", value: "Pictures_backup")]
+        if let url = await rsyncUIDeepLinks.createURL(host, queryitems) {
+            print(url)
+        }
+    }
 
+    @Test func createURLloadandestimate() async {
+        let rsyncUIDeepLinks = await RsyncUIDeepLinks()
+        let host = Deeplinknavigation.loadprofileandestimate.rawValue
+        let queryitems: [URLQueryItem] = [URLQueryItem(name: "profile", value: "default")]
+        if let url = await rsyncUIDeepLinks.createURL(host, queryitems) {
+            print(url)
+        }
+    }
+    
     private func handleURLsidebarmainView(_ url: URL) async {
         switch await handleURL(url)?.host {
         case .quicktask:

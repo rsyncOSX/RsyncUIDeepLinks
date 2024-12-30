@@ -61,8 +61,22 @@ public struct DeeplinkQueryItem: Hashable, Sendable {
 
 @MainActor
 public struct RsyncUIDeepLinks {
+    
+    let rsyncuischeme: String = "rsyncuiapp"
+    
+    public func createURL(_ host: String, _ queryitems: [URLQueryItem]) -> URL? {
+        var components = URLComponents()
+        components.scheme = rsyncuischeme
+        components.host = host
+        components.queryItems = queryitems.map({ item in
+            return item
+        })
+        return components.url
+    }
+    
+    
     public func validateScheme(_ url: URL) throws -> URLComponents? {
-        guard url.scheme == "rsyncuiapp" else {
+        guard url.scheme == rsyncuischeme else {
             throw DeeplinknavigationError.invalidscheme
         }
         if let components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
