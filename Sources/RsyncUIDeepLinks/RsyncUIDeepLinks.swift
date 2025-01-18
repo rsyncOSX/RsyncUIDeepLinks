@@ -74,6 +74,21 @@ public struct RsyncUIDeepLinks {
         return components.url
     }
     
+    public func validateScheme(_ urlstring: String) throws -> URLComponents? {
+        if let url = URL(string: urlstring) {
+            guard url.scheme == rsyncuischeme else {
+                throw DeeplinknavigationError.invalidscheme
+            }
+            if let components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
+                return components
+            } else {
+                throw DeeplinknavigationError.invalidurl
+            }
+        } else {
+            throw DeeplinknavigationError.invalidurl
+        }
+    }
+    
     
     public func validateScheme(_ url: URL) throws -> URLComponents? {
         guard url.scheme == rsyncuischeme else {
