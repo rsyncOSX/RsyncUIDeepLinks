@@ -121,7 +121,7 @@ import Testing
             }
         }
     }
-    
+
     @Test func createURLloadandverify() async {
         let rsyncUIDeepLinks = await RsyncUIDeepLinks()
         let host = Deeplinknavigation.loadprofileandverify.rawValue
@@ -140,7 +140,7 @@ import Testing
             print(url)
         }
     }
-    
+
     private func handleURLsidebarmainView(_ url: URL) async {
         switch await handleURL(url)?.host {
         case .quicktask:
@@ -181,7 +181,7 @@ import Testing
                 let profile = queryitems[0].value ?? ""
                 Logger.process.info("selectedprofile \(profile)")
                 Logger.process.info("selectedview = .verify_remote")
-                
+
                 if profile == "default" {
                     Logger.process.info("Observe queryitem")
                     Logger.process.info("queryitem \(queryitems[1])")

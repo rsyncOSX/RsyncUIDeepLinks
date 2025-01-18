@@ -61,32 +61,27 @@ public struct DeeplinkQueryItem: Hashable, Sendable {
 
 @MainActor
 public struct RsyncUIDeepLinks {
-    
     let rsyncuischeme: String = "rsyncuiapp"
-    
+
     public func createURL(_ host: String, _ queryitems: [URLQueryItem]) -> URL? {
         var components = URLComponents()
         components.scheme = rsyncuischeme
         components.host = host
-        components.queryItems = queryitems.map({ item in
-            return item
-        })
+        components.queryItems = queryitems.map { item in
+            item
+        }
         return components.url
     }
-    
+
     public func validateURLstring(_ urlstring: String) throws -> Bool {
-        if let url = URL(string: urlstring) {
-            if let components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
-                return true
-            } else {
-                throw DeeplinknavigationError.invalidurl
-            }
-        } else {
+        guard let url = URL(string: urlstring),
+              url.isFileURL || (url.host != nil && url.scheme != nil)
+        else {
             throw DeeplinknavigationError.invalidurl
         }
+        return true
     }
-    
-    
+
     public func validateScheme(_ url: URL) throws -> URLComponents? {
         guard url.scheme == rsyncuischeme else {
             throw DeeplinknavigationError.invalidscheme
@@ -115,13 +110,13 @@ public struct RsyncUIDeepLinks {
             throw NoValidProfileError.noprofile
         }
     }
-    
-    public func validatenoongoingURLaction(_ quyerItems: URLQueryItem?) throws  {
+
+    public func validatenoongoingURLaction(_ quyerItems: URLQueryItem?) throws {
         guard quyerItems == nil else {
             throw OnlyoneURLactionError.onlyoneaction
         }
     }
-    
+
     public func withQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
         // First check if there are queryItems and only one queryItem
         // rsyncuiapp://loadprofileandestimate?profile=Pictures
