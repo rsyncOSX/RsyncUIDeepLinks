@@ -67,9 +67,7 @@ public struct RsyncUIDeepLinks {
         var components = URLComponents()
         components.scheme = rsyncuischeme
         components.host = host
-        components.queryItems = queryitems.map { item in
-            item
-        }
+        components.queryItems = queryitems.map { $0 }
         return components.url
     }
 
