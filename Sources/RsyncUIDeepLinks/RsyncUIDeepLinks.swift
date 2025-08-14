@@ -59,7 +59,6 @@ public struct DeeplinkQueryItem: Hashable, Sendable {
     public let queryItems: [URLQueryItem]?
 }
 
-@MainActor
 public struct RsyncUIDeepLinks {
     let rsyncuischeme: String = "rsyncuiapp"
 

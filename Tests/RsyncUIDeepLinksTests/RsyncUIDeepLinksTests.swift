@@ -18,14 +18,14 @@ import Testing
     var url5: URL? { URL(string: "rsyncuiapp://loadprofileandverify?profile=Pictures&id=Pictures_backup") }
 
     @Test func URLstring1() async {
-        let rsyncUIDeepLinks = await RsyncUIDeepLinks()
+        let rsyncUIDeepLinks =  RsyncUIDeepLinks()
         let truth = DeeplinkQueryItem(host: .loadprofileandestimate,
                                       queryItems: [URLQueryItem(name: "profile", value: "Pictures")])
 
         if let url1 {
             do {
-                if let components = try await rsyncUIDeepLinks.validateScheme(url1) {
-                    if let test = await rsyncUIDeepLinks.handlevalidURL(components) {
+                if let components = try  rsyncUIDeepLinks.validateScheme(url1) {
+                    if let test =  rsyncUIDeepLinks.handlevalidURL(components) {
                         #expect(test == truth)
                         await handleURLsidebarmainView(url1)
                     } else {
@@ -39,14 +39,14 @@ import Testing
     }
 
     @Test func URLstring2() async {
-        let rsyncUIDeepLinks = await RsyncUIDeepLinks()
+        let rsyncUIDeepLinks =  RsyncUIDeepLinks()
         let truth = DeeplinkQueryItem(host: .loadprofileandestimate,
                                       queryItems: [URLQueryItem(name: "profile", value: "default")])
 
         if let url2 {
             do {
-                if let components = try await rsyncUIDeepLinks.validateScheme(url2) {
-                    if let test = await rsyncUIDeepLinks.handlevalidURL(components) {
+                if let components = try  rsyncUIDeepLinks.validateScheme(url2) {
+                    if let test =  rsyncUIDeepLinks.handlevalidURL(components) {
                         #expect(test == truth)
                         await handleURLsidebarmainView(url2)
                     } else {
@@ -60,14 +60,14 @@ import Testing
     }
 
     @Test func URLstring3() async {
-        let rsyncUIDeepLinks = await RsyncUIDeepLinks()
+        let rsyncUIDeepLinks =  RsyncUIDeepLinks()
         let truth = DeeplinkQueryItem(host: .loadprofile,
                                       queryItems: [URLQueryItem(name: "profile", value: "Samsung")])
 
         if let url3 {
             do {
-                if let components = try await rsyncUIDeepLinks.validateScheme(url3) {
-                    if let test = await rsyncUIDeepLinks.handlevalidURL(components) {
+                if let components = try  rsyncUIDeepLinks.validateScheme(url3) {
+                    if let test =  rsyncUIDeepLinks.handlevalidURL(components) {
                         #expect(test == truth)
                         await handleURLsidebarmainView(url3)
                     } else {
@@ -81,14 +81,14 @@ import Testing
     }
 
     @Test func URLstring4() async {
-        let rsyncUIDeepLinks = await RsyncUIDeepLinks()
+        let rsyncUIDeepLinks =  RsyncUIDeepLinks()
         let truth = DeeplinkQueryItem(host: .quicktask,
                                       queryItems: nil)
 
         if let url4 {
             do {
-                if let components = try await rsyncUIDeepLinks.validateScheme(url4) {
-                    if let test = await rsyncUIDeepLinks.handlevalidURL(components) {
+                if let components = try  rsyncUIDeepLinks.validateScheme(url4) {
+                    if let test =  rsyncUIDeepLinks.handlevalidURL(components) {
                         #expect(test == truth)
                         await handleURLsidebarmainView(url4)
                     } else {
@@ -102,14 +102,14 @@ import Testing
     }
 
     @Test func URLstring5() async {
-        let rsyncUIDeepLinks = await RsyncUIDeepLinks()
+        let rsyncUIDeepLinks =  RsyncUIDeepLinks()
         let truth = DeeplinkQueryItem(host: .loadprofileandverify,
                                       queryItems: [URLQueryItem(name: "profile", value: "Pictures"),
                                                    URLQueryItem(name: "id", value: "Pictures_backup")])
         if let url5 {
             do {
-                if let components = try await rsyncUIDeepLinks.validateScheme(url5) {
-                    if let test = await rsyncUIDeepLinks.handlevalidURL(components) {
+                if let components = try  rsyncUIDeepLinks.validateScheme(url5) {
+                    if let test =  rsyncUIDeepLinks.handlevalidURL(components) {
                         #expect(test == truth)
                         await handleURLsidebarmainView(url5)
                     } else {
@@ -123,20 +123,20 @@ import Testing
     }
 
     @Test func createURLloadandverify() async {
-        let rsyncUIDeepLinks = await RsyncUIDeepLinks()
+        let rsyncUIDeepLinks =  RsyncUIDeepLinks()
         let host = Deeplinknavigation.loadprofileandverify.rawValue
         let queryitems: [URLQueryItem] = [URLQueryItem(name: "profile", value: "Pictures"),
                                           URLQueryItem(name: "id", value: "Pictures_backup")]
-        if let url = await rsyncUIDeepLinks.createURL(host, queryitems) {
+        if let url =  rsyncUIDeepLinks.createURL(host, queryitems) {
             print(url)
         }
     }
 
     @Test func createURLloadandestimate() async {
-        let rsyncUIDeepLinks = await RsyncUIDeepLinks()
+        let rsyncUIDeepLinks =  RsyncUIDeepLinks()
         let host = Deeplinknavigation.loadprofileandestimate.rawValue
         let queryitems: [URLQueryItem] = [URLQueryItem(name: "profile", value: "default")]
-        if let url = await rsyncUIDeepLinks.createURL(host, queryitems) {
+        if let url =  rsyncUIDeepLinks.createURL(host, queryitems) {
             print(url)
         }
     }
@@ -201,14 +201,14 @@ import Testing
     }
 
     func handleURL(_ url: URL) async -> DeeplinkQueryItem? {
-        let rsyncUIDeepLinks = await RsyncUIDeepLinks()
+        let rsyncUIDeepLinks =  RsyncUIDeepLinks()
         do {
-            if let components = try await rsyncUIDeepLinks.validateScheme(url) {
-                if let deepLinkQueryItem = await rsyncUIDeepLinks.handlevalidURL(components) {
+            if let components = try  rsyncUIDeepLinks.validateScheme(url) {
+                if let deepLinkQueryItem =  rsyncUIDeepLinks.handlevalidURL(components) {
                     return deepLinkQueryItem
                 } else {
                     do {
-                        try await rsyncUIDeepLinks.thrownoaction()
+                        try  rsyncUIDeepLinks.thrownoaction()
                     } catch let e {
                         let error = e
                         Logger.process.warning("handleURL: Error - \(error)")
