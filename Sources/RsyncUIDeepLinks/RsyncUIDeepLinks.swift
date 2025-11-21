@@ -62,23 +62,37 @@ public struct DeeplinkQueryItem: Hashable, Sendable {
 public struct RsyncUIDeepLinks {
     let rsyncuischeme: String = "rsyncuiapp"
 
+    /// Creates a deep link URL with the specified host and query items
+    /// - Parameters:
+    ///   - host: The deep link action (e.g., "quicktask", "loadprofile")
+    ///   - queryitems: Array of URL query items
+    /// - Returns: Constructed URL or nil if invalid
+    /// - Example: `rsyncuiapp://loadprofile?profile=Pictures`
     public func createURL(_ host: String, _ queryitems: [URLQueryItem]) -> URL? {
         var components = URLComponents()
         components.scheme = rsyncuischeme
         components.host = host
-        components.queryItems = queryitems.map { $0 }
+        components.queryItems = queryitems
         return components.url
     }
 
+    /// Validates that a URL string is properly formatted
+    /// - Parameter urlstring: The URL string to validate
+    /// - Returns: true if valid
+    /// - Throws: `DeeplinknavigationError.invalidurl` if URL is malformed or missing required components
     public func validateURLstring(_ urlstring: String) throws -> Bool {
         guard let url = URL(string: urlstring),
-              url.isFileURL || (url.host != nil && url.scheme != nil)
+              url.host != nil && url.scheme != nil
         else {
             throw DeeplinknavigationError.invalidurl
         }
         return true
     }
 
+    /// Validates that the URL scheme matches the expected rsyncuiapp scheme
+    /// - Parameter url: The URL to validate
+    /// - Returns: URLComponents if valid
+    /// - Throws: `DeeplinknavigationError.invalidscheme` if scheme doesn't match, or `DeeplinknavigationError.invalidurl` if URL cannot be parsed
     public func validateScheme(_ url: URL) throws -> URLComponents? {
         guard url.scheme == rsyncuischeme else {
             throw DeeplinknavigationError.invalidscheme
@@ -90,38 +104,51 @@ public struct RsyncUIDeepLinks {
         }
     }
 
+    /// Throws an error indicating no valid action was found
+    /// - Throws: `DeeplinknavigationError.noaction`
     public func thrownoaction() throws {
         throw DeeplinknavigationError.noaction
     }
 
+    /// Handles a validated URL by parsing its components and query items
+    /// - Parameter urlcomponents: The URL components to process
+    /// - Returns: DeeplinkQueryItem containing the parsed action and parameters, or nil if invalid
     public func handlevalidURL(_ urlcomponents: URLComponents) -> DeeplinkQueryItem? {
-        if let queryItems = urlcomponents.queryItems, queryItems.count > 0 {
+        if let queryItems = urlcomponents.queryItems, !queryItems.isEmpty {
             withQueryItems(urlcomponents)
         } else {
             noQueryItems(urlcomponents)
         }
     }
 
+    /// Validates that a profile exists in the list of available profiles
+    /// - Parameters:
+    ///   - profile: The profile name to validate
+    ///   - existingProfiles: Array of valid profile names
+    /// - Throws: `NoValidProfileError.noprofile` if profile is not found
     public func validateprofile(_ profile: String, _ existingProfiles: [String]) throws {
         guard existingProfiles.contains(profile) else {
             throw NoValidProfileError.noprofile
         }
     }
 
-    public func validatenoongoingURLaction(_ quyerItems: URLQueryItem?) throws {
-        guard quyerItems == nil else {
+    /// Validates that no other URL action is currently in progress
+    /// - Parameter queryItems: Current query items to check
+    /// - Throws: `OnlyoneURLactionError.onlyoneaction` if an action is already in progress
+    public func validateNoOngoingURLAction(_ queryItems: URLQueryItem?) throws {
+        guard queryItems == nil else {
             throw OnlyoneURLactionError.onlyoneaction
         }
     }
 
+    /// Processes URLs with query items
+    /// - Parameter components: The URL components containing query items
+    /// - Returns: DeeplinkQueryItem with parsed action and parameters
+    /// - Note: Supports URLs like:
+    ///   - `rsyncuiapp://loadprofile?profile=Pictures`
+    ///   - `rsyncuiapp://loadprofileandestimate?profile=default`
+    ///   - `rsyncuiapp://loadprofileandverify?profile=Pictures`
     public func withQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
-        // First check if there are queryItems and only one queryItem
-        // rsyncuiapp://loadprofileandestimate?profile=Pictures
-        // rsyncuiapp://loadprofileandestimate?profile=default
-        // rsyncuiapp://loadprofile?profile=Samsung
-        // rsyncuiapp://loadprofileandverify?profile=Pictures
-        // rsyncuiapp://loadprofileandverify?profile=Pictures&id=Pictures_backup
-
         if let queryItems = components.queryItems {
             if let host = components.host,
                let queryitemname = queryItems.first?.name,
@@ -146,10 +173,13 @@ public struct RsyncUIDeepLinks {
         return nil
     }
 
+    /// Processes URLs without query items
+    /// - Parameter components: The URL components to process
+    /// - Returns: DeeplinkQueryItem with parsed action
+    /// - Note: Supports URLs like: `rsyncuiapp://quicktask`
     public func noQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
         guard components.queryItems == nil else { return nil }
-        // No queryItems found
-        // rsyncuiapp://quicktask
+        
         if let host = components.host {
             switch host {
             case Deeplinknavigation.quicktask.rawValue:
@@ -158,7 +188,6 @@ public struct RsyncUIDeepLinks {
             default:
                 return nil
             }
-
         } else {
             return nil
         }
