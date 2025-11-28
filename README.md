@@ -333,3 +333,11 @@ struct MyApp: App {
 ## Thread Safety
 
 All types in this package conform to `Sendable`, making them safe to use across concurrency boundaries.
+
+## License
+
+MIT
+
+## Author
+
+Thomas Evensen
