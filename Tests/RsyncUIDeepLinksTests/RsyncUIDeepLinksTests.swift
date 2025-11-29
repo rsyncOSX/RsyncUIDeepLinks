@@ -9,13 +9,11 @@ import Testing
     // rsyncuiapp://loadandestimateprofile?profile=default
     // rsyncuiapp://loadprofile?profile=Samsung
     // rsyncuiapp://quicktask¨
-    // rsyncuiapp://loadprofileandverify?profile=Pictures&id=Pictures_backup - multiple queryItems, separated by &
 
     var url1: URL? { URL(string: "rsyncuiapp://loadprofileandestimate?profile=Pictures") }
     var url2: URL? { URL(string: "rsyncuiapp://loadprofileandestimate?profile=default") }
     var url3: URL? { URL(string: "rsyncuiapp://loadprofile?profile=Samsung") }
     var url4: URL? { URL(string: "rsyncuiapp://quicktask") }
-    // var url5: URL? { URL(string: "rsyncuiapp://loadprofileandverify?profile=Pictures&id=Pictures_backup") }
 
     @Test func URLstring1() async {
         let rsyncUIDeepLinks =  RsyncUIDeepLinks()
@@ -100,38 +98,7 @@ import Testing
             }
         }
     }
-/*
-    @Test func URLstring5() async {
-        let rsyncUIDeepLinks =  RsyncUIDeepLinks()
-        let truth = DeeplinkQueryItem(host: .loadprofileandverify,
-                                      queryItems: [URLQueryItem(name: "profile", value: "Pictures"),
-                                                   URLQueryItem(name: "id", value: "Pictures_backup")])
-        if let url5 {
-            do {
-                if let components = try  rsyncUIDeepLinks.validateScheme(url5) {
-                    if let test =  rsyncUIDeepLinks.handlevalidURL(components) {
-                        #expect(test == truth)
-                        await handleURLsidebarmainView(url5)
-                    } else {
-                        Logger.process.warning("No action")
-                    }
-                }
-            } catch {
-                Logger.process.warning("Error: \(error)")
-            }
-        }
-    }
 
-    @Test func createURLloadandverify() async {
-        let rsyncUIDeepLinks =  RsyncUIDeepLinks()
-        let host = Deeplinknavigation.loadprofileandverify.rawValue
-        let queryitems: [URLQueryItem] = [URLQueryItem(name: "profile", value: "Pictures"),
-                                          URLQueryItem(name: "id", value: "Pictures_backup")]
-        if let url =  rsyncUIDeepLinks.createURL(host, queryitems) {
-            print(url)
-        }
-    }
-*/
     @Test func createURLloadandestimate() async {
         let rsyncUIDeepLinks =  RsyncUIDeepLinks()
         let host = Deeplinknavigation.loadprofileandestimate.rawValue
@@ -175,28 +142,6 @@ import Testing
             } else {
                 return
             }
-/*
-        case .loadprofileandverify:
-            Logger.process.info("handleURLsidebarmainView: URL Loadprofile and Verify - \(url)")
-            if let queryitems = await handleURL(url)?.queryItems, queryitems.count == 2 {
-                let profile = queryitems[0].value ?? ""
-                Logger.process.info("selectedprofile \(profile)")
-                Logger.process.info("selectedview = .verify_remote")
-
-                if profile == "default" {
-                    Logger.process.info("Observe queryitem")
-                    Logger.process.info("queryitem \(queryitems[1])")
-                } else {
-                    if validateprofile(profile) {
-                        Logger.process.info("Observe queryitem")
-                        Logger.process.info("queryitem \(queryitems[1])")
-                    }
-                }
-
-            } else {
-                return
-            }
-*/
         default:
             return
         }

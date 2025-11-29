@@ -41,13 +41,6 @@ Loads a profile and performs an estimate operation.
 rsyncuiapp://loadprofileandestimate?profile=default
 ```
 
-### Load Profile and Verify
-Loads a profile and performs a verify operation.
-
-```
-rsyncuiapp://loadprofileandverify?profile=Pictures
-```
-
 ## Usage
 
 ### Initialization
@@ -137,11 +130,6 @@ do {
             if let profileName = queryItem.queryItems?.first?.value {
                 print("Load profile and estimate: \(profileName)")
             }
-            
-        case .loadprofileandverify:
-            if let profileName = queryItem.queryItems?.first?.value {
-                print("Load profile and verify: \(profileName)")
-            }
         }
     } else {
         try deepLinks.thrownoaction()
@@ -194,7 +182,6 @@ public enum Deeplinknavigation: String, Sendable {
     case quicktask
     case loadprofile
     case loadprofileandestimate
-    case loadprofileandverify
 }
 ```
 
@@ -315,10 +302,6 @@ struct MyApp: App {
         case .loadprofileandestimate:
             if let profile = queryItem.queryItems?.first?.value {
                 // Load and estimate
-            }
-        case .loadprofileandverify:
-            if let profile = queryItem.queryItems?.first?.value {
-                // Load and verify
             }
         }
     }
