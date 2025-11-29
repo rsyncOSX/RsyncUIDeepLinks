@@ -15,7 +15,7 @@ import Testing
     var url2: URL? { URL(string: "rsyncuiapp://loadprofileandestimate?profile=default") }
     var url3: URL? { URL(string: "rsyncuiapp://loadprofile?profile=Samsung") }
     var url4: URL? { URL(string: "rsyncuiapp://quicktask") }
-    var url5: URL? { URL(string: "rsyncuiapp://loadprofileandverify?profile=Pictures&id=Pictures_backup") }
+    // var url5: URL? { URL(string: "rsyncuiapp://loadprofileandverify?profile=Pictures&id=Pictures_backup") }
 
     @Test func URLstring1() async {
         let rsyncUIDeepLinks =  RsyncUIDeepLinks()
@@ -100,7 +100,7 @@ import Testing
             }
         }
     }
-
+/*
     @Test func URLstring5() async {
         let rsyncUIDeepLinks =  RsyncUIDeepLinks()
         let truth = DeeplinkQueryItem(host: .loadprofileandverify,
@@ -131,7 +131,7 @@ import Testing
             print(url)
         }
     }
-
+*/
     @Test func createURLloadandestimate() async {
         let rsyncUIDeepLinks =  RsyncUIDeepLinks()
         let host = Deeplinknavigation.loadprofileandestimate.rawValue
@@ -175,6 +175,7 @@ import Testing
             } else {
                 return
             }
+/*
         case .loadprofileandverify:
             Logger.process.info("handleURLsidebarmainView: URL Loadprofile and Verify - \(url)")
             if let queryitems = await handleURL(url)?.queryItems, queryitems.count == 2 {
@@ -195,6 +196,7 @@ import Testing
             } else {
                 return
             }
+*/
         default:
             return
         }

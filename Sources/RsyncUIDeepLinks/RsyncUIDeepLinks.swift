@@ -47,7 +47,6 @@ public enum Deeplinknavigation: String, Sendable {
     case quicktask
     case loadprofile
     case loadprofileandestimate
-    case loadprofileandverify
 }
 
 public enum QueryItemNames: String, Sendable {
@@ -159,9 +158,6 @@ public struct RsyncUIDeepLinks {
                     return deepLinkQueryItem
                 case Deeplinknavigation.loadprofileandestimate.rawValue:
                     let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandestimate, queryItems: queryItems)
-                    return deepLinkQueryItem
-                case Deeplinknavigation.loadprofileandverify.rawValue:
-                    let deepLinkQueryItem = DeeplinkQueryItem(host: .loadprofileandverify, queryItems: queryItems)
                     return deepLinkQueryItem
                 default:
                     return nil
