@@ -81,7 +81,7 @@ public struct RsyncUIDeepLinks {
     /// - Throws: `DeeplinknavigationError.invalidurl` if URL is malformed or missing required components
     public func validateURLstring(_ urlstring: String) throws -> Bool {
         guard let url = URL(string: urlstring),
-              url.host != nil && url.scheme != nil
+              url.host != nil, url.scheme != nil
         else {
             throw DeeplinknavigationError.invalidurl
         }
@@ -175,7 +175,7 @@ public struct RsyncUIDeepLinks {
     /// - Note: Supports URLs like: `rsyncuiapp://quicktask`
     public func noQueryItems(_ components: URLComponents) -> DeeplinkQueryItem? {
         guard components.queryItems == nil else { return nil }
-        
+
         if let host = components.host {
             switch host {
             case Deeplinknavigation.quicktask.rawValue:
