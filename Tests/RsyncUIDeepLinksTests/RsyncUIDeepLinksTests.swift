@@ -176,6 +176,6 @@ import Testing
 }
 
 extension Logger {
-    private static let subsystem = Bundle.main.bundleIdentifier!
+    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.default.subsystem"
     static let process = Logger(subsystem: subsystem, category: "process")
 }
