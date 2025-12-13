@@ -156,15 +156,15 @@ import Testing
                 } else {
                     do {
                         try rsyncUIDeepLinks.thrownoaction()
-                    } catch let e {
-                        let error = e
+                    } catch let err {
+                        let error = err
                         Logger.process.warning("handleURL: Error - \(error)")
                     }
                 }
             }
 
-        } catch let e {
-            let error = e
+        } catch let err {
+            let error = err
             Logger.process.warning("handleURL: Error - \(error)")
         }
         return nil

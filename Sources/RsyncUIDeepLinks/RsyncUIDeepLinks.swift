@@ -91,7 +91,8 @@ public struct RsyncUIDeepLinks {
     /// Validates that the URL scheme matches the expected rsyncuiapp scheme
     /// - Parameter url: The URL to validate
     /// - Returns: URLComponents if valid
-    /// - Throws: `DeeplinknavigationError.invalidscheme` if scheme doesn't match, or `DeeplinknavigationError.invalidurl` if URL cannot be parsed
+    /// - Throws: `DeeplinknavigationError.invalidscheme` if scheme doesn't match, 
+    ///   or `DeeplinknavigationError.invalidurl` if URL cannot be parsed
     public func validateScheme(_ url: URL) throws -> URLComponents? {
         guard url.scheme == rsyncuischeme else {
             throw DeeplinknavigationError.invalidscheme
